@@ -2,3 +2,8 @@
 src = "src"
 out = "out"
 libs = ["lib"]
+
+[rpc_endpoints]
+opsepolia = "${RPC_URL_OP_SEPOLIA}"
+basesepolia = "${RPC_URL_BASE_SEPOLIA}"
+base = "${RPC_URL_BASE}"

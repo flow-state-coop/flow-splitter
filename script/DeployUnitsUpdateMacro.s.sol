@@ -2,15 +2,14 @@
 pragma solidity ^0.8.23;
 
 import {Script, console2} from "forge-std/Script.sol";
+import {UnitsUpdateMacro} from "../src/UnitsUpdateMacro.sol";
 
-contract InitializeFlowSplitterProxy is Script {
+contract DeployUnitsUpdateMacro is Script {
     function run() public {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
 
-        address proxy = 0xd53B8Bed28E122eA20dCC90d3991a614EC163a21;
-
-        (bool success, bytes memory data) = proxy.call(abi.encodeWithSignature("initialize()"));
+        new UnitsUpdateMacro();
 
         vm.stopBroadcast();
     }
