@@ -12,7 +12,7 @@ contract UpgradeFlowSplitter is Script {
 
         UUPSUpgradeable proxy = UUPSUpgradeable(0xd53B8Bed28E122eA20dCC90d3991a614EC163a21);
 
-        proxy.upgradeToAndCall(0x9e9d4C9aa2D7e124d474eBFd6c193c473b0e0afc, "");
+        proxy.upgradeTo(0x42b3AbAA7535557D7C1d106704129A8d0716de75);
 
         vm.stopBroadcast();
     }

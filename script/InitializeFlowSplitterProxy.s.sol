@@ -12,6 +12,9 @@ contract InitializeFlowSplitterProxy is Script {
 
         (bool success, bytes memory data) = proxy.call(abi.encodeWithSignature("initialize()"));
 
+        console2.logBool(success);
+        console2.logBytes(data);
+
         vm.stopBroadcast();
     }
 }
