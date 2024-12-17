@@ -22,9 +22,13 @@ contract FlowSplitter is IFlowSplitter, Initializable, OwnableUpgradeable, UUPSU
     // @notice The pool counter used as id of the pools
     uint256 public poolCounter;
 
-    /// @notice Maps the `poolId` to a `poolAddress`
-    /// @dev 'poolId' -> 'poolAddress'
-    mapping(uint256 => Pool) private pools;
+    /// @notice Maps the `poolId` to a `pool`
+    /// @dev 'poolId' -> 'pool'
+    mapping(uint256 => Pool) private poolsById;
+
+    /// @notice Maps the `adminRole` to a `pool`
+    /// @dev 'adminRole' -> 'pool'
+    mapping(bytes32 => Pool) private poolsByAdminRole;
 
     /// @notice Checks if the caller is not a pool admin
     /// @param _poolId The id of the pool
@@ -51,14 +55,20 @@ contract FlowSplitter is IFlowSplitter, Initializable, OwnableUpgradeable, UUPSU
         Member[] memory _members,
         address[] memory _admins,
         string memory _metadata
-    ) external returns (ISuperfluidPool pool) {
-        pool = SuperTokenV1Library.createPool(_poolSuperToken, address(this), _poolConfig);
+    ) external returns (ISuperfluidPool gdaPool) {
+        gdaPool = SuperTokenV1Library.createPool(_poolSuperToken, address(this), _poolConfig);
 
         poolCounter++;
 
         bytes32 adminRole = keccak256(abi.encodePacked(poolCounter, "admin"));
 
-        pools[poolCounter] = Pool(address(pool), address(_poolSuperToken), _metadata, adminRole);
+        Pool memory pool = Pool(poolCounter, address(gdaPool), address(_poolSuperToken), _metadata, adminRole);
+        poolsById[poolCounter] = pool;
+        poolsByAdminRole[adminRole] = pool;
+
+        _updateMembersUnits(gdaPool, _members);
+
+        emit PoolCreated(poolCounter, address(gdaPool), address(_poolSuperToken), _metadata);
 
         for (uint256 i; i < _admins.length;) {
             _grantRole(adminRole, _admins[i]);
@@ -67,17 +77,13 @@ contract FlowSplitter is IFlowSplitter, Initializable, OwnableUpgradeable, UUPSU
                 ++i;
             }
         }
-
-        _updateMembersUnits(pool, _members);
-
-        emit PoolCreated(poolCounter, address(pool), address(_poolSuperToken), _metadata);
     }
 
     /// @notice Update the members units
     /// @param _poolId The pool id
     /// @param _members The members to update the units of
     function updateMembersUnits(uint256 _poolId, Member[] memory _members) external onlyPoolAdmin(_poolId) {
-        ISuperfluidPool pool = ISuperfluidPool(pools[_poolId].poolAddress);
+        ISuperfluidPool pool = ISuperfluidPool(poolsById[_poolId].poolAddress);
 
         _updateMembersUnits(pool, _members);
     }
@@ -88,20 +94,26 @@ contract FlowSplitter is IFlowSplitter, Initializable, OwnableUpgradeable, UUPSU
     function addPoolAdmin(uint256 _poolId, address _admin) external onlyPoolAdmin(_poolId) {
         if (_admin == address(0)) revert ZERO_ADDRESS();
 
-        _grantRole(pools[_poolId].adminRole, _admin);
+        _grantRole(poolsById[_poolId].adminRole, _admin);
     }
 
     /// @notice Remove a pool admin
     /// @param _poolId The pool id
     /// @param _admin The address to remove
     function removePoolAdmin(uint256 _poolId, address _admin) external onlyPoolAdmin(_poolId) {
-        _revokeRole(pools[_poolId].adminRole, _admin);
+        _revokeRole(poolsById[_poolId].adminRole, _admin);
     }
 
     /// @notice Get a pool by the id
     /// @param _poolId The id of the pool
-    function getPool(uint256 _poolId) external view returns (Pool memory pool) {
-        pool = pools[_poolId];
+    function getPoolById(uint256 _poolId) external view returns (Pool memory pool) {
+        pool = poolsById[_poolId];
+    }
+
+    /// @notice Get a pool by the admin role
+    /// @param _adminRole The admin role
+    function getPoolByAdminRole(bytes32 _adminRole) external view returns (Pool memory pool) {
+        pool = poolsByAdminRole[_adminRole];
     }
 
     /// @notice Checks if the address is a pool admin.
@@ -138,6 +150,6 @@ contract FlowSplitter is IFlowSplitter, Initializable, OwnableUpgradeable, UUPSU
     /// @param _address The address to check
     /// @return 'true' if the address is a pool admin, otherwise 'false'
     function _isPoolAdmin(uint256 _poolId, address _address) internal view returns (bool) {
-        return hasRole(pools[_poolId].adminRole, _address);
+        return hasRole(poolsById[_poolId].adminRole, _address);
     }
 }

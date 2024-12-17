@@ -49,7 +49,7 @@ contract FlowSplitterTest is Test {
 
         _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
 
-        assertEq(_flowSplitter.getPool(1).poolAddress, address(_pool));
+        assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
         assertEq(_pool.getUnits(firstMember), 1);
         assertEq(_pool.getUnits(secondMember), 2);
     }
@@ -126,7 +126,7 @@ contract FlowSplitterTest is Test {
 
         _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
 
-        assertEq(_flowSplitter.getPool(1).poolAddress, address(_pool));
+        assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
         assertEq(_pool.getUnits(firstMember), 1);
         assertEq(_pool.getUnits(secondMember), 2);
 
@@ -152,7 +152,7 @@ contract FlowSplitterTest is Test {
 
         _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
 
-        assertEq(_flowSplitter.getPool(1).poolAddress, address(_pool));
+        assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
         assertEq(_pool.getUnits(firstMember), 1);
         assertEq(_pool.getUnits(secondMember), 2);
 

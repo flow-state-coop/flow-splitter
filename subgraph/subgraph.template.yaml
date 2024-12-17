@@ -1,0 +1,31 @@
+specVersion: 0.0.2
+description: Flow Splitter Subgraph
+repository: https://github.com/Flow-State-Coop/flow-splitter/tree/main/subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: FlowSplitter
+    network: {{ network }}
+    source:
+      address: "{{ address }}"
+      abi: FlowSplitter
+      startBlock: {{ startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Pool
+        - PoolAdmin
+      abis:
+        - name: FlowSplitter
+          file: ./abis/FlowSplitter.json
+      eventHandlers:
+        - event: PoolCreated(indexed uint256,address,address,string)
+          handler: handlePoolCreated
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+      file: ./src/mapping.ts

@@ -12,3 +12,8 @@ docs/
 
 # Dotenv file
 .env
+
+# Subgraph
+node_modules
+build
+generated

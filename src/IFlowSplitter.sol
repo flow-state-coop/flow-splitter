@@ -13,6 +13,7 @@ import {PoolConfig} from
 interface IFlowSplitter {
     // @notice The pool structure
     struct Pool {
+        uint256 id;
         address poolAddress;
         address token;
         string metadata;
@@ -49,7 +50,7 @@ interface IFlowSplitter {
         Member[] memory _members,
         address[] memory _admins,
         string memory _metadata
-    ) external returns (ISuperfluidPool pool);
+    ) external returns (ISuperfluidPool gdaPool);
 
     /// @notice Update the members units
     /// @param _poolId The pool id
@@ -74,5 +75,9 @@ interface IFlowSplitter {
 
     /// @notice Get a pool by the id
     /// @param poolId The id of the pool
-    function getPool(uint256 poolId) external view returns (Pool memory pool);
+    function getPoolById(uint256 poolId) external view returns (Pool memory pool);
+
+    /// @notice Get a pool by the admin role
+    /// @param _adminRole The admin role
+    function getPoolByAdminRole(bytes32 _adminRole) external view returns (Pool memory pool);
 }

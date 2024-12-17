@@ -1,0 +1,22 @@
+{
+  "name": "flow-splitter-subgraph",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "graph codegen",
+    "prepare:optimism-sepolia": "mustache config/optimism-sepolia.json subgraph.template.yaml > subgraph.yaml",
+    "build:optimism-sepolia": "pnpm prepare:optimism-sepolia && pnpm codegen && graph build",
+    "deploy:optimism-sepolia": "goldsky subgraph deploy flow-splitter-optimism-sepolia/0.0.1 --path .",
+    "create-local": "graph create --node http://localhost:8020/ flow-splitter-local",
+    "remove-local": "graph remove --node http://localhost:8020/ flow-splitter-local",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 flow-splitter-local",
+    "test": "graph test",
+    "test:coverage": "graph test --coverage"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.91.1",
+    "@graphprotocol/graph-ts": "0.36.0"
+  },
+  "devDependencies": {
+    "mustache": "^4.0.1"
+  }
+}

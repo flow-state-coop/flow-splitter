@@ -1,0 +1,21 @@
+type Pool @entity {
+  id: ID!
+  poolAddress: Bytes!
+  token: Bytes!
+  metadata: String!
+  adminRole: Bytes!
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
+}
+
+type PoolAdmin @entity {
+  id: ID!
+  address: Bytes!
+  adminRole: Bytes!
+  poolId: String!
+  poolAddress: Bytes!
+  poolToken: Bytes!
+  poolMetadata: String!
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
+}
