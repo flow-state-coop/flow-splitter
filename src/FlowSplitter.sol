@@ -74,18 +74,25 @@ contract FlowSplitter is IFlowSplitter, Initializable, OwnableUpgradeable, UUPSU
             _grantRole(adminRole, _admins[i]);
 
             unchecked {
-                ++i;
+                i++;
             }
         }
     }
 
-    /// @notice Update the members units
-    /// @param _poolId The pool id
-    /// @param _members The members to update the units of
-    function updateMembersUnits(uint256 _poolId, Member[] memory _members) external onlyPoolAdmin(_poolId) {
-        ISuperfluidPool pool = ISuperfluidPool(poolsById[_poolId].poolAddress);
+    /// @notice Updates the pool members, admins and metadata
+    /// @param _poolId The id of the pool
+    /// @param _members The members of the pool
+    /// @param _admins Addresses and status of the pool admins
+    /// @param _metadata metadata of the pool
+    function updatePool(uint256 _poolId, Member[] memory _members, Admin[] memory _admins, string memory _metadata)
+        external
+        onlyPoolAdmin(_poolId)
+    {
+        ISuperfluidPool gdaPool = ISuperfluidPool(poolsById[_poolId].poolAddress);
 
-        _updateMembersUnits(pool, _members);
+        _updateMembersUnits(gdaPool, _members);
+        _updatePoolAdmins(_poolId, _admins);
+        _updatePoolMetadata(_poolId, _metadata);
     }
 
     /// @notice Add a pool admin
@@ -104,6 +111,29 @@ contract FlowSplitter is IFlowSplitter, Initializable, OwnableUpgradeable, UUPSU
         _revokeRole(poolsById[_poolId].adminRole, _admin);
     }
 
+    /// @notice Update the pool admins
+    /// @param _poolId The pool id
+    /// @param _admins The address and status of the admins
+    function updatePoolAdmins(uint256 _poolId, Admin[] memory _admins) external onlyPoolAdmin(_poolId) {
+        _updatePoolAdmins(_poolId, _admins);
+    }
+
+    /// @notice Update the members units
+    /// @param _poolId The pool id
+    /// @param _members The members to update the units of
+    function updateMembersUnits(uint256 _poolId, Member[] memory _members) external onlyPoolAdmin(_poolId) {
+        ISuperfluidPool gdaPool = ISuperfluidPool(poolsById[_poolId].poolAddress);
+
+        _updateMembersUnits(gdaPool, _members);
+    }
+
+    /// @notice Update the pool metadata
+    /// @param _poolId The pool id
+    /// @param _metadata The new metadata of the pool
+    function updatePoolMetadata(uint256 _poolId, string memory _metadata) external onlyPoolAdmin(_poolId) {
+        _updatePoolMetadata(_poolId, _metadata);
+    }
+
     /// @notice Get a pool by the id
     /// @param _poolId The id of the pool
     function getPoolById(uint256 _poolId) external view returns (Pool memory pool) {
@@ -118,10 +148,10 @@ contract FlowSplitter is IFlowSplitter, Initializable, OwnableUpgradeable, UUPSU
 
     /// @notice Checks if the address is a pool admin.
     /// @param _poolId The ID of the pool
-    /// @param _address The address to check
+    /// @param _account The address to check
     /// @return 'true' if the address is a pool admin, otherwise 'false'
-    function isPoolAdmin(uint256 _poolId, address _address) external view returns (bool) {
-        return _isPoolAdmin(_poolId, _address);
+    function isPoolAdmin(uint256 _poolId, address _account) external view returns (bool) {
+        return _isPoolAdmin(_poolId, _account);
     }
 
     function initialize() public initializer {
@@ -131,25 +161,51 @@ contract FlowSplitter is IFlowSplitter, Initializable, OwnableUpgradeable, UUPSU
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 
-    /// @notice Update the members units
-    /// @param _pool The pool address
-    /// @param _members The members to update the units of
-    function _updateMembersUnits(ISuperfluidPool _pool, Member[] memory _members) internal {
-        for (uint256 i; i < _members.length;) {
-            _pool.updateMemberUnits(_members[i].account, _members[i].units);
+    /// @notice Update the pool admins
+    /// @param _poolId The pool id
+    /// @param _admins The address and status of the admins
+    function _updatePoolAdmins(uint256 _poolId, Admin[] memory _admins) internal {
+        for (uint256 i; i < _admins.length;) {
+            if (_admins[i].status == AdminStatus.Added) {
+                _grantRole(poolsById[_poolId].adminRole, _admins[i].account);
+            } else if (_admins[i].status == AdminStatus.Removed) {
+                _revokeRole(poolsById[_poolId].adminRole, _admins[i].account);
+            }
 
             unchecked {
-                ++i;
+                i++;
             }
         }
+    }
+
+    /// @notice Update the members units
+    /// @param _gdaPool The pool address
+    /// @param _members The members to update the units of
+    function _updateMembersUnits(ISuperfluidPool _gdaPool, Member[] memory _members) internal {
+        for (uint256 i; i < _members.length;) {
+            _gdaPool.updateMemberUnits(_members[i].account, _members[i].units);
+
+            unchecked {
+                i++;
+            }
+        }
+    }
+
+    /// @notice Update the pool metadata
+    /// @param _poolId The pool id
+    /// @param _metadata The new metadata
+    function _updatePoolMetadata(uint256 _poolId, string memory _metadata) internal {
+        poolsById[_poolId].metadata = _metadata;
+
+        emit PoolMetadataUpdated(_poolId, _metadata);
     }
 
     /// @notice Checks if the address is a pool admin
     /// @dev Internal function used to determine if an address is a pool admin
     /// @param _poolId The pool id
-    /// @param _address The address to check
+    /// @param _account The address to check
     /// @return 'true' if the address is a pool admin, otherwise 'false'
-    function _isPoolAdmin(uint256 _poolId, address _address) internal view returns (bool) {
-        return hasRole(poolsById[_poolId].adminRole, _address);
+    function _isPoolAdmin(uint256 _poolId, address _account) internal view returns (bool) {
+        return hasRole(poolsById[_poolId].adminRole, _account);
     }
 }

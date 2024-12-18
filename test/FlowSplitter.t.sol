@@ -70,6 +70,65 @@ contract FlowSplitterTest is Test {
         assertTrue(_flowSplitter.isPoolAdmin(1, firstMember));
     }
 
+    function test_updatePool() public {
+        address[] memory admins = new address[](1);
+        IFlowSplitter.Member[] memory members = new IFlowSplitter.Member[](1);
+
+        admins[0] = admin;
+        members[0] = IFlowSplitter.Member(firstMember, 1);
+
+        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+
+        assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
+        assertEq(_pool.getUnits(firstMember), 1);
+
+        vm.warp(block.timestamp + 100);
+        vm.startPrank(admin);
+
+        IFlowSplitter.Admin[] memory newAdmins = new IFlowSplitter.Admin[](2);
+        IFlowSplitter.Member[] memory newMembers = new IFlowSplitter.Member[](1);
+
+        newAdmins[0] = IFlowSplitter.Admin(admins[0], IFlowSplitter.AdminStatus.Removed);
+        newAdmins[1] = IFlowSplitter.Admin(firstMember, IFlowSplitter.AdminStatus.Added);
+        newMembers[0] = IFlowSplitter.Member(secondMember, 2);
+        string memory newMetadata = "test";
+
+        _flowSplitter.updatePool(1, newMembers, newAdmins, newMetadata);
+
+        assertFalse(_flowSplitter.isPoolAdmin(1, admins[0]));
+        assertTrue(_flowSplitter.isPoolAdmin(1, firstMember));
+        assertEq(_pool.getUnits(firstMember), 1);
+        assertEq(_pool.getUnits(secondMember), 2);
+        assertEq(_flowSplitter.getPoolById(1).metadata, newMetadata);
+    }
+
+    function test_updatePool_NOT_POOL_ADMIN() public {
+        address[] memory admins = new address[](1);
+        IFlowSplitter.Member[] memory members = new IFlowSplitter.Member[](1);
+
+        admins[0] = admin;
+        members[0] = IFlowSplitter.Member(firstMember, 1);
+
+        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+
+        assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
+        assertEq(_pool.getUnits(firstMember), 1);
+
+        vm.warp(block.timestamp + 100);
+        vm.startPrank(firstMember);
+
+        IFlowSplitter.Admin[] memory newAdmins = new IFlowSplitter.Admin[](2);
+        IFlowSplitter.Member[] memory newMembers = new IFlowSplitter.Member[](1);
+
+        newAdmins[0] = IFlowSplitter.Admin(admins[0], IFlowSplitter.AdminStatus.Removed);
+        newAdmins[1] = IFlowSplitter.Admin(firstMember, IFlowSplitter.AdminStatus.Added);
+        newMembers[0] = IFlowSplitter.Member(secondMember, 2);
+        string memory newMetadata = "test";
+
+        vm.expectRevert(IFlowSplitter.NOT_POOL_ADMIN.selector);
+        _flowSplitter.updatePool(1, newMembers, newAdmins, newMetadata);
+    }
+
     function test_addPoolAdmin_NOT_POOL_ADMIN() public {
         address[] memory admins = new address[](1);
         IFlowSplitter.Member[] memory members = new IFlowSplitter.Member[](0);
@@ -164,5 +223,81 @@ contract FlowSplitterTest is Test {
 
         vm.expectRevert(IFlowSplitter.NOT_POOL_ADMIN.selector);
         _flowSplitter.updateMembersUnits(1, members);
+    }
+
+    function test_updatePoolAdmins() public {
+        address[] memory admins = new address[](1);
+        IFlowSplitter.Member[] memory members = new IFlowSplitter.Member[](0);
+
+        admins[0] = admin;
+
+        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+
+        vm.warp(block.timestamp + 100);
+        vm.startPrank(admin);
+
+        IFlowSplitter.Admin[] memory newAdmins = new IFlowSplitter.Admin[](2);
+
+        newAdmins[0] = IFlowSplitter.Admin(admins[0], IFlowSplitter.AdminStatus.Removed);
+        newAdmins[1] = IFlowSplitter.Admin(firstMember, IFlowSplitter.AdminStatus.Added);
+
+        _flowSplitter.updatePoolAdmins(1, newAdmins);
+
+        assertFalse(_flowSplitter.isPoolAdmin(1, admins[0]));
+        assertTrue(_flowSplitter.isPoolAdmin(1, firstMember));
+    }
+
+    function test_updatePoolAdmins_NOT_POOL_ADMIN() public {
+        address[] memory admins = new address[](1);
+        IFlowSplitter.Member[] memory members = new IFlowSplitter.Member[](0);
+
+        admins[0] = admin;
+
+        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+
+        vm.warp(block.timestamp + 100);
+        vm.startPrank(firstMember);
+
+        IFlowSplitter.Admin[] memory newAdmins = new IFlowSplitter.Admin[](2);
+
+        newAdmins[0] = IFlowSplitter.Admin(admins[0], IFlowSplitter.AdminStatus.Removed);
+        newAdmins[1] = IFlowSplitter.Admin(firstMember, IFlowSplitter.AdminStatus.Added);
+
+        vm.expectRevert(IFlowSplitter.NOT_POOL_ADMIN.selector);
+        _flowSplitter.updatePoolAdmins(1, newAdmins);
+    }
+
+    function test_updatePoolMetadata() public {
+        address[] memory admins = new address[](1);
+        IFlowSplitter.Member[] memory members = new IFlowSplitter.Member[](0);
+
+        admins[0] = admin;
+
+        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+
+        vm.warp(block.timestamp + 100);
+        vm.startPrank(admin);
+
+        string memory newMetadata = "test";
+
+        _flowSplitter.updatePoolMetadata(1, newMetadata);
+
+        assertEq(_flowSplitter.getPoolById(1).metadata, newMetadata);
+    }
+
+    function test_updatePoolMetadata_NOT_POOL_ADMIN() public {
+        address[] memory admins = new address[](0);
+        IFlowSplitter.Member[] memory members = new IFlowSplitter.Member[](0);
+
+        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+
+        assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
+
+        vm.warp(block.timestamp + 100);
+
+        string memory newMetadata = "test";
+
+        vm.expectRevert(IFlowSplitter.NOT_POOL_ADMIN.selector);
+        _flowSplitter.updatePoolMetadata(1, newMetadata);
     }
 }

@@ -24,6 +24,8 @@ dataSources:
       eventHandlers:
         - event: PoolCreated(indexed uint256,address,address,string)
           handler: handlePoolCreated
+        - event: PoolMetadataUpdated(indexed uint256,string)
+          handler: handlePoolMetadataUpdated
         - event: RoleGranted(indexed bytes32,indexed address,indexed address)
           handler: handleRoleGranted
         - event: RoleRevoked(indexed bytes32,indexed address,indexed address)

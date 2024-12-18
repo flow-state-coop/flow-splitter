@@ -165,7 +165,7 @@
     "name": "isPoolAdmin",
     "inputs": [
       { "name": "_poolId", "type": "uint256", "internalType": "uint256" },
-      { "name": "_address", "type": "address", "internalType": "address" }
+      { "name": "_account", "type": "address", "internalType": "address" }
     ],
     "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
     "stateMutability": "view"
@@ -260,6 +260,70 @@
           { "name": "units", "type": "uint128", "internalType": "uint128" }
         ]
       }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "updatePool",
+    "inputs": [
+      { "name": "_poolId", "type": "uint256", "internalType": "uint256" },
+      {
+        "name": "_members",
+        "type": "tuple[]",
+        "internalType": "struct IFlowSplitter.Member[]",
+        "components": [
+          { "name": "account", "type": "address", "internalType": "address" },
+          { "name": "units", "type": "uint128", "internalType": "uint128" }
+        ]
+      },
+      {
+        "name": "_admins",
+        "type": "tuple[]",
+        "internalType": "struct IFlowSplitter.Admin[]",
+        "components": [
+          { "name": "account", "type": "address", "internalType": "address" },
+          {
+            "name": "status",
+            "type": "uint8",
+            "internalType": "enum IFlowSplitter.AdminStatus"
+          }
+        ]
+      },
+      { "name": "_metadata", "type": "string", "internalType": "string" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "updatePoolAdmins",
+    "inputs": [
+      { "name": "_poolId", "type": "uint256", "internalType": "uint256" },
+      {
+        "name": "_admins",
+        "type": "tuple[]",
+        "internalType": "struct IFlowSplitter.Admin[]",
+        "components": [
+          { "name": "account", "type": "address", "internalType": "address" },
+          {
+            "name": "status",
+            "type": "uint8",
+            "internalType": "enum IFlowSplitter.AdminStatus"
+          }
+        ]
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "updatePoolMetadata",
+    "inputs": [
+      { "name": "_poolId", "type": "uint256", "internalType": "uint256" },
+      { "name": "_metadata", "type": "string", "internalType": "string" }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
@@ -376,6 +440,25 @@
         "type": "address",
         "indexed": false,
         "internalType": "address"
+      },
+      {
+        "name": "metadata",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PoolMetadataUpdated",
+    "inputs": [
+      {
+        "name": "poolId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
       },
       {
         "name": "metadata",

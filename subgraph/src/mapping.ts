@@ -10,6 +10,7 @@ import {
 import {
   FlowSplitter,
   PoolCreated,
+  PoolMetadataUpdated,
   RoleGranted,
   RoleRevoked,
 } from "../generated/FlowSplitter/FlowSplitter";
@@ -31,6 +32,14 @@ export function handlePoolCreated(event: PoolCreated): void {
   pool.adminRole = adminRole;
   pool.createdAtBlock = event.block.number;
   pool.createdAtTimestamp = event.block.timestamp;
+
+  pool.save();
+}
+
+export function handlePoolMetadataUpdated(event: PoolMetadataUpdated): void {
+  const pool = new Pool(event.params.poolId.toHex());
+
+  pool.metadata = event.params.metadata;
 
   pool.save();
 }
