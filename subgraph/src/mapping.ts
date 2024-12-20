@@ -14,7 +14,13 @@ import {
   RoleGranted,
   RoleRevoked,
 } from "../generated/FlowSplitter/FlowSplitter";
-import { Pool, PoolAdmin } from "../generated/schema";
+import {
+  Pool,
+  PoolAdmin,
+  PoolMetadataUpdatedEvent,
+  PoolAdminAddedEvent,
+  PoolAdminRemovedEvent,
+} from "../generated/schema";
 
 export function handlePoolCreated(event: PoolCreated): void {
   const pool = new Pool(event.params.poolId.toHex());
@@ -42,6 +48,17 @@ export function handlePoolMetadataUpdated(event: PoolMetadataUpdated): void {
   pool.metadata = event.params.metadata;
 
   pool.save();
+
+  const poolMetadataUpdatedEvent = new PoolMetadataUpdatedEvent(
+    `PoolMetadataUpdatedEvent-${event.transaction.hash.toHexString()}-${event.logIndex.toString()}`
+  );
+
+  poolMetadataUpdatedEvent.metadata = event.params.metadata;
+  poolMetadataUpdatedEvent.pool = pool.id;
+  poolMetadataUpdatedEvent.blockNumber = event.block.number;
+  poolMetadataUpdatedEvent.timestamp = event.block.timestamp;
+
+  poolMetadataUpdatedEvent.save();
 }
 
 export function handleRoleGranted(event: RoleGranted): void {
@@ -63,18 +80,52 @@ export function handleRoleGranted(event: RoleGranted): void {
 
   poolAdmin.address = event.params.account;
   poolAdmin.adminRole = event.params.role;
-  poolAdmin.poolId = pool.id;
-  poolAdmin.poolAddress = pool.poolAddress;
-  poolAdmin.poolToken = pool.token;
-  poolAdmin.poolMetadata = pool.metadata;
+  poolAdmin.pool = pool.id;
   poolAdmin.createdAtBlock = event.block.number;
   poolAdmin.createdAtTimestamp = event.block.timestamp;
 
   poolAdmin.save();
+
+  const poolAdminAddedEvent = new PoolAdminAddedEvent(
+    `PoolAdminAddedEvent-${event.transaction.hash.toHexString()}-${event.logIndex.toString()}`
+  );
+
+  poolAdminAddedEvent.address = event.params.account;
+  poolAdminAddedEvent.adminRole = event.params.role;
+  poolAdminAddedEvent.pool = pool.id;
+  poolAdminAddedEvent.blockNumber = event.block.number;
+  poolAdminAddedEvent.timestamp = event.block.timestamp;
+
+  poolAdminAddedEvent.save();
 }
 
 export function handleRoleRevoked(event: RoleRevoked): void {
   const id = `${event.params.role.toHex()}-${event.params.account.toHex()}`;
 
   store.remove("PoolAdmin", id);
+
+  const contract = FlowSplitter.bind(event.address);
+  const poolId = contract.getPoolByAdminRole(event.params.role).id;
+  const pool = Pool.load(poolId.toHex());
+
+  if (!pool) {
+    log.warning("Pool not found for role admin {} and account {}", [
+      event.params.role.toHex(),
+      event.params.account.toHex(),
+    ]);
+
+    return;
+  }
+
+  const poolAdminRemovedEvent = new PoolAdminRemovedEvent(
+    `PoolAdminRemovedEvent-${event.transaction.hash.toHexString()}-${event.logIndex.toString()}`
+  );
+
+  poolAdminRemovedEvent.address = event.params.account;
+  poolAdminRemovedEvent.adminRole = event.params.role;
+  poolAdminRemovedEvent.pool = pool.id;
+  poolAdminRemovedEvent.blockNumber = event.block.number;
+  poolAdminRemovedEvent.timestamp = event.block.timestamp;
+
+  poolAdminRemovedEvent.save();
 }

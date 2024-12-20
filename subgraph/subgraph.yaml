@@ -18,6 +18,9 @@ dataSources:
       entities:
         - Pool
         - PoolAdmin
+        - PoolMetadataUpdatedEvent
+        - PoolAdminAddedEvent
+        - PoolAdminRemovedEvent
       abis:
         - name: FlowSplitter
           file: ./abis/FlowSplitter.json
