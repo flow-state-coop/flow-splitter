@@ -9,7 +9,7 @@ contract DeployFlowSplitterProxy is Script {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
 
-        new ERC1967Proxy(0x7dc22Ef932cCEecc92D260dF90c75009D0f4d7D8, "");
+        new ERC1967Proxy(0xDaE4e1A6BAF56802BAbA282a646cd7D2792B858B, "");
 
         vm.stopBroadcast();
     }

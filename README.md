@@ -22,6 +22,27 @@ $ forge fmt
 
 ## Contract Deployments
 
+### Base
+
+<table>
+<thead>
+    <tr>
+        <th>Contract</th>
+        <th>Address</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>Flow Splitter Proxy</td>
+        <td>0x25B64C200cf3362BaC6961353D38A1dbEB42e60E</td>
+    </tr>
+    <tr>
+        <td>Flow Splitter Implementation</td>
+        <td>0xDaE4e1A6BAF56802BAbA282a646cd7D2792B858B</td>
+    </tr>
+</tbody>
+</table>
+
 ### Optimism Sepolia
 
 <table>
