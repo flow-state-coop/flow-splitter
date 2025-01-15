@@ -7,7 +7,10 @@ import {
     ISuperfluidPool,
     ISuperToken
 } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
-import {PoolConfig} from
+import {
+    PoolConfig,
+    PoolERC20Metadata
+} from
     "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/gdav1/IGeneralDistributionAgreementV1.sol";
 import {SuperfluidPool} from "@superfluid-finance/ethereum-contracts/contracts/agreements/gdav1/SuperfluidPool.sol";
 import {MacroForwarder} from "@superfluid-finance/ethereum-contracts/contracts/utils/MacroForwarder.sol";
@@ -28,7 +31,7 @@ contract FlowSplitterTest is Test {
     MacroForwarder macroForwarder = MacroForwarder(0xFD0268E33111565dE546af2675351A4b1587F89F);
 
     function setUp() public {
-        vm.createSelectFork({blockNumber: 21018577, urlOrAlias: "opsepolia"});
+        vm.createSelectFork({blockNumber: 22542291, urlOrAlias: "opsepolia"});
 
         _flowSplitter = new FlowSplitter();
 
@@ -47,7 +50,9 @@ contract FlowSplitterTest is Test {
         members[0] = IFlowSplitter.Member(firstMember, 1);
         members[1] = IFlowSplitter.Member(secondMember, 2);
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
         assertEq(_pool.getUnits(firstMember), 1);
@@ -60,7 +65,9 @@ contract FlowSplitterTest is Test {
 
         admins[0] = admin;
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         vm.warp(block.timestamp + 100);
         vm.startPrank(admin);
@@ -77,7 +84,9 @@ contract FlowSplitterTest is Test {
         admins[0] = admin;
         members[0] = IFlowSplitter.Member(firstMember, 1);
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
         assertEq(_pool.getUnits(firstMember), 1);
@@ -109,7 +118,9 @@ contract FlowSplitterTest is Test {
         admins[0] = admin;
         members[0] = IFlowSplitter.Member(firstMember, 1);
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
         assertEq(_pool.getUnits(firstMember), 1);
@@ -135,7 +146,9 @@ contract FlowSplitterTest is Test {
 
         admins[0] = admin;
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         vm.warp(block.timestamp + 100);
         vm.startPrank(firstMember);
@@ -150,7 +163,9 @@ contract FlowSplitterTest is Test {
 
         admins[0] = admin;
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         vm.warp(block.timestamp + 100);
         vm.startPrank(admin);
@@ -166,7 +181,9 @@ contract FlowSplitterTest is Test {
 
         admins[0] = admin;
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         vm.warp(block.timestamp + 100);
         vm.startPrank(firstMember);
@@ -183,7 +200,9 @@ contract FlowSplitterTest is Test {
         members[0] = IFlowSplitter.Member(firstMember, 1);
         members[1] = IFlowSplitter.Member(secondMember, 2);
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
         assertEq(_pool.getUnits(firstMember), 1);
@@ -209,7 +228,9 @@ contract FlowSplitterTest is Test {
         members[0] = IFlowSplitter.Member(firstMember, 1);
         members[1] = IFlowSplitter.Member(secondMember, 2);
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
         assertEq(_pool.getUnits(firstMember), 1);
@@ -231,7 +252,9 @@ contract FlowSplitterTest is Test {
 
         admins[0] = admin;
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         vm.warp(block.timestamp + 100);
         vm.startPrank(admin);
@@ -253,7 +276,9 @@ contract FlowSplitterTest is Test {
 
         admins[0] = admin;
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         vm.warp(block.timestamp + 100);
         vm.startPrank(firstMember);
@@ -273,7 +298,9 @@ contract FlowSplitterTest is Test {
 
         admins[0] = admin;
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         vm.warp(block.timestamp + 100);
         vm.startPrank(admin);
@@ -289,7 +316,9 @@ contract FlowSplitterTest is Test {
         address[] memory admins = new address[](0);
         IFlowSplitter.Member[] memory members = new IFlowSplitter.Member[](0);
 
-        _pool = _flowSplitter.createPool(superToken, PoolConfig(false, true), members, admins, "");
+        _pool = _flowSplitter.createPool(
+            superToken, PoolConfig(false, true), PoolERC20Metadata("Superfluid Pool", "POOL", 0), members, admins, ""
+        );
 
         assertEq(_flowSplitter.getPoolById(1).poolAddress, address(_pool));
 

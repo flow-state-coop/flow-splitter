@@ -31,8 +31,19 @@ export function handlePoolCreated(event: PoolCreated): void {
         .concat(Bytes.fromUTF8("admin"))
     )
   );
+  const contract = FlowSplitter.bind(event.address);
+  const callResultName = contract.try_getPoolNameById(event.params.poolId);
+  const callResultSymbol = contract.try_getPoolSymbolById(event.params.poolId);
+  const poolName = callResultName.reverted
+    ? "Superfluid Pool"
+    : callResultName.value;
+  const poolSymbol = callResultSymbol.reverted
+    ? "POOL"
+    : callResultSymbol.value;
 
   pool.poolAddress = event.params.poolAddress;
+  pool.name = poolName;
+  pool.symbol = poolSymbol;
   pool.token = event.params.token;
   pool.metadata = event.params.metadata;
   pool.adminRole = adminRole;

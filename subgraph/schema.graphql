@@ -2,6 +2,8 @@ type Pool @entity {
   id: ID!
   poolAddress: Bytes!
   token: Bytes!
+  name: String!
+  symbol: String!
   metadata: String!
   adminRole: Bytes!
   poolMetadataUpdatedEvent: [PoolMetadataUpdatedEvent!]! @derivedFrom(field: "pool")

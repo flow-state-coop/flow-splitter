@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: FlowSplitter
-    network: base
+    network: optimism-sepolia
     source:
-      address: "0x25B64C200cf3362BaC6961353D38A1dbEB42e60E"
+      address: "0xd53B8Bed28E122eA20dCC90d3991a614EC163a21"
       abi: FlowSplitter
-      startBlock: 24550773
+      startBlock: 21114747
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

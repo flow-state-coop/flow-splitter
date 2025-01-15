@@ -44,6 +44,16 @@
         ]
       },
       {
+        "name": "_erc20Metadata",
+        "type": "tuple",
+        "internalType": "struct PoolERC20Metadata",
+        "components": [
+          { "name": "name", "type": "string", "internalType": "string" },
+          { "name": "symbol", "type": "string", "internalType": "string" },
+          { "name": "decimals", "type": "uint8", "internalType": "uint8" }
+        ]
+      },
+      {
         "name": "_members",
         "type": "tuple[]",
         "internalType": "struct IFlowSplitter.Member[]",
@@ -84,11 +94,7 @@
           },
           { "name": "token", "type": "address", "internalType": "address" },
           { "name": "metadata", "type": "string", "internalType": "string" },
-          {
-            "name": "adminRole",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          }
+          { "name": "adminRole", "type": "bytes32", "internalType": "bytes32" }
         ]
       }
     ],
@@ -114,13 +120,29 @@
           },
           { "name": "token", "type": "address", "internalType": "address" },
           { "name": "metadata", "type": "string", "internalType": "string" },
-          {
-            "name": "adminRole",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          }
+          { "name": "adminRole", "type": "bytes32", "internalType": "bytes32" }
         ]
       }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getPoolNameById",
+    "inputs": [
+      { "name": "_poolId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "name", "type": "string", "internalType": "string" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getPoolSymbolById",
+    "inputs": [
+      { "name": "_poolId", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [
+      { "name": "symbol", "type": "string", "internalType": "string" }
     ],
     "stateMutability": "view"
   },

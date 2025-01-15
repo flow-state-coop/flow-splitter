@@ -5,7 +5,10 @@ import {
     ISuperfluidPool,
     ISuperToken
 } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
-import {PoolConfig} from
+import {
+    PoolConfig,
+    PoolERC20Metadata
+} from
     "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/gdav1/IGeneralDistributionAgreementV1.sol";
 
 /// @title FlowSpliter Interface
@@ -56,17 +59,19 @@ interface IFlowSplitter {
     error ZERO_ADDRESS();
 
     /// @notice Create a distribution pool and assign the inital units to the members
-    /// @param poolSuperToken Address of the token distributed by the pool
-    /// @param poolConfig Set if the units are transferable and if anyone can distribute funds
-    /// @param members The pool members
-    /// @param admins Addresses of the pool admins
-    /// @param metadata metadata of the pool
+    /// @param _poolSuperToken Address of the token distributed by the pool
+    /// @param _poolConfig Set if the units are transferable and if anyone can distribute funds
+    /// @param _erc20Metadata The name, symbol and decimals of the pool
+    /// @param _members The members of the pool
+    /// @param _admins Addresses of the pool admins
+    /// @param _metadata metadata of the pool
     function createPool(
-        ISuperToken poolSuperToken,
-        PoolConfig memory poolConfig,
-        Member[] memory members,
-        address[] memory admins,
-        string memory metadata
+        ISuperToken _poolSuperToken,
+        PoolConfig memory _poolConfig,
+        PoolERC20Metadata memory _erc20Metadata,
+        Member[] memory _members,
+        address[] memory _admins,
+        string memory _metadata
     ) external returns (ISuperfluidPool gdaPool);
 
     /// @notice Add a pool admin
@@ -107,4 +112,12 @@ interface IFlowSplitter {
     /// @notice Get a pool by the admin role
     /// @param adminRole The admin role
     function getPoolByAdminRole(bytes32 adminRole) external view returns (Pool memory pool);
+
+    /// @notice Get a pool name by id
+    /// @param _poolId The id of the pool
+    function getPoolNameById(uint256 _poolId) external view returns (string memory name);
+
+    /// @notice Get a pool symbol by id
+    /// @param _poolId The id of the pool
+    function getPoolSymbolById(uint256 _poolId) external view returns (string memory symbol);
 }
