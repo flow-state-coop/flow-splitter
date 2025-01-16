@@ -38,7 +38,7 @@ $ forge fmt
     </tr>
     <tr>
         <td>Flow Splitter Implementation</td>
-        <td>0xDaE4e1A6BAF56802BAbA282a646cd7D2792B858B</td>
+        <td>0x787504063A14C7e8bA6538Cf33570649A499771D</td>
     </tr>
 </tbody>
 </table>
@@ -59,7 +59,7 @@ $ forge fmt
     </tr>
     <tr>
         <td>Flow Splitter Implementation</td>
-        <td>0xDaE4e1A6BAF56802BAbA282a646cd7D2792B858B</td>
+        <td>0x787504063A14C7e8bA6538Cf33570649A499771D</td>
     </tr>
 </tbody>
 </table>

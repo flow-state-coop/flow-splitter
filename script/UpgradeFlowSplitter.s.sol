@@ -10,9 +10,9 @@ contract UpgradeFlowSplitter is Script {
         uint256 ownerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(ownerPrivateKey);
 
-        UUPSUpgradeable proxy = UUPSUpgradeable(0xd53B8Bed28E122eA20dCC90d3991a614EC163a21);
+        UUPSUpgradeable proxy = UUPSUpgradeable(0x25B64C200cf3362BaC6961353D38A1dbEB42e60E);
 
-        proxy.upgradeTo(0xcd48C949178A5A5B227d44D5a2B9a5AE4e4E1180);
+        proxy.upgradeTo(0x787504063A14C7e8bA6538Cf33570649A499771D);
 
         vm.stopBroadcast();
     }
