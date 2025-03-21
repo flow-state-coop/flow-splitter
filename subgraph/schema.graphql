@@ -6,7 +6,7 @@ type Pool @entity {
   symbol: String!
   metadata: String!
   adminRole: Bytes!
-  poolMetadataUpdatedEvent: [PoolMetadataUpdatedEvent!]! @derivedFrom(field: "pool")
+  poolMetadataUpdatedEvents: [PoolMetadataUpdatedEvent!]! @derivedFrom(field: "pool")
   poolAdminAddedEvents: [PoolAdminAddedEvent!]! @derivedFrom(field: "pool")
   poolAdminRemovedEvents: [PoolAdminRemovedEvent!]! @derivedFrom(field: "pool")
   poolAdmins: [PoolAdmin!]! @derivedFrom(field: "pool")
@@ -29,6 +29,7 @@ type PoolMetadataUpdatedEvent @entity {
   pool: Pool!
   blockNumber: BigInt!
   timestamp: BigInt!
+  transactionHash: Bytes!
 }
 
 type PoolAdminAddedEvent @entity {
@@ -38,6 +39,7 @@ type PoolAdminAddedEvent @entity {
   pool: Pool!
   blockNumber: BigInt!
   timestamp: BigInt!
+  transactionHash: Bytes!
 }
 
 type PoolAdminRemovedEvent @entity {
@@ -47,4 +49,5 @@ type PoolAdminRemovedEvent @entity {
   pool: Pool!
   blockNumber: BigInt!
   timestamp: BigInt!
+  transactionHash: Bytes!
 }

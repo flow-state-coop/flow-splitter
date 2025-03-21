@@ -64,6 +64,27 @@ $ forge fmt
 </tbody>
 </table>
 
+### Arbitrum One
+
+<table>
+<thead>
+    <tr>
+        <th>Contract</th>
+        <th>Address</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>Flow Splitter Proxy</td>
+        <td>0x25B64C200cf3362BaC6961353D38A1dbEB42e60E</td>
+    </tr>
+    <tr>
+        <td>Flow Splitter Implementation</td>
+        <td>0xdae4e1a6baf56802baba282a646cd7d2792b858b</td>
+    </tr>
+</tbody>
+</table>
+
 ### Optimism Sepolia
 
 <table>

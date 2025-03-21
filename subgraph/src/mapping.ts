@@ -68,6 +68,7 @@ export function handlePoolMetadataUpdated(event: PoolMetadataUpdated): void {
   poolMetadataUpdatedEvent.pool = pool.id;
   poolMetadataUpdatedEvent.blockNumber = event.block.number;
   poolMetadataUpdatedEvent.timestamp = event.block.timestamp;
+  poolMetadataUpdatedEvent.transactionHash = event.transaction.hash;
 
   poolMetadataUpdatedEvent.save();
 }
@@ -106,6 +107,7 @@ export function handleRoleGranted(event: RoleGranted): void {
   poolAdminAddedEvent.pool = pool.id;
   poolAdminAddedEvent.blockNumber = event.block.number;
   poolAdminAddedEvent.timestamp = event.block.timestamp;
+  poolAdminAddedEvent.transactionHash = event.transaction.hash;
 
   poolAdminAddedEvent.save();
 }
@@ -137,6 +139,7 @@ export function handleRoleRevoked(event: RoleRevoked): void {
   poolAdminRemovedEvent.pool = pool.id;
   poolAdminRemovedEvent.blockNumber = event.block.number;
   poolAdminRemovedEvent.timestamp = event.block.timestamp;
+  poolAdminRemovedEvent.transactionHash = event.transaction.hash;
 
   poolAdminRemovedEvent.save();
 }
