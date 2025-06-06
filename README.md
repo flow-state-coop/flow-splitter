@@ -22,7 +22,7 @@ $ forge fmt
 
 ## Contract Deployments
 
-### Optimism
+### Arbitrum One
 
 <table>
 <thead>
@@ -38,7 +38,7 @@ $ forge fmt
     </tr>
     <tr>
         <td>Flow Splitter Implementation</td>
-        <td>0x787504063A14C7e8bA6538Cf33570649A499771D</td>
+        <td>0xdae4e1a6baf56802baba282a646cd7d2792b858b</td>
     </tr>
 </tbody>
 </table>
@@ -64,7 +64,28 @@ $ forge fmt
 </tbody>
 </table>
 
-### Arbitrum One
+### Celo
+
+<table>
+<thead>
+    <tr>
+        <th>Contract</th>
+        <th>Address</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>Flow Splitter Proxy</td>
+        <td>0x787504063A14C7e8bA6538Cf33570649A499771D</td>
+    </tr>
+    <tr>
+        <td>Flow Splitter Implementation</td>
+        <td>0xC580a8127EA27eCBE364b3f958215bd4F8CC56D5</td>
+    </tr>
+</tbody>
+</table>
+
+### Optimism
 
 <table>
 <thead>
@@ -80,7 +101,7 @@ $ forge fmt
     </tr>
     <tr>
         <td>Flow Splitter Implementation</td>
-        <td>0xdae4e1a6baf56802baba282a646cd7d2792b858b</td>
+        <td>0x787504063A14C7e8bA6538Cf33570649A499771D</td>
     </tr>
 </tbody>
 </table>

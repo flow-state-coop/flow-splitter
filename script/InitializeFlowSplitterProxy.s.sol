@@ -8,7 +8,7 @@ contract InitializeFlowSplitterProxy is Script {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
 
-        address proxy = 0x25B64C200cf3362BaC6961353D38A1dbEB42e60E;
+        address proxy = 0x787504063A14C7e8bA6538Cf33570649A499771D;
 
         (bool success, bytes memory data) = proxy.call(abi.encodeWithSignature("initialize()"));
 
