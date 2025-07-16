@@ -34,11 +34,11 @@ $ forge fmt
 <tbody>
     <tr>
         <td>Flow Splitter Proxy</td>
-        <td>0x25B64C200cf3362BaC6961353D38A1dbEB42e60E</td>
+        <td>0xCbA99f104D17D06Ce4C80Be143f29b6fd44D3Ce9</td>
     </tr>
     <tr>
         <td>Flow Splitter Implementation</td>
-        <td>0xdae4e1a6baf56802baba282a646cd7d2792b858b</td>
+        <td>0x73DD388BC769eD4975Cb4e6Cfd9a5b9474082875</td>
     </tr>
 </tbody>
 </table>
@@ -76,11 +76,11 @@ $ forge fmt
 <tbody>
     <tr>
         <td>Flow Splitter Proxy</td>
-        <td>0x787504063A14C7e8bA6538Cf33570649A499771D</td>
+        <td>0x0e9ddfd2Ffdb0BA1aC3340D865193A7b6d4Ea147</td>
     </tr>
     <tr>
         <td>Flow Splitter Implementation</td>
-        <td>0xC580a8127EA27eCBE364b3f958215bd4F8CC56D5</td>
+        <td>0xaE6D32DDEb75AF799182E4431c714d8fBbCB02B9</td>
     </tr>
 </tbody>
 </table>

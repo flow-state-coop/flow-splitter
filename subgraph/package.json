@@ -14,7 +14,7 @@
     "build:arbitrum-one": "pnpm prepare:arbitrum-one && pnpm codegen && graph build",
     "build:optimism-sepolia": "pnpm prepare:optimism-sepolia && pnpm codegen && graph build",
     "deploy:base": "source .env && graph deploy flow-splitter-base --node https://api.0xgraph.xyz/deploy --ipfs https://api.0xgraph.xyz/ipfs --deploy-key $GRAPH_DEPLOY_KEY",
-    "deploy:celo": "source  .env && graph deploy flow-splitter-celo --version-label v0.0.2 --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key $GRAPH_DEPLOY_KEY --ipfs https://ipfs.satsuma.xyz",
+    "deploy:celo": "source  .env && graph deploy flow-splitter-celo --version-label v0.0.3 --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key $GRAPH_DEPLOY_KEY --ipfs https://ipfs.satsuma.xyz",
     "deploy:optimism": "source .env && graph deploy flow-splitter-optimism --node https://api.0xgraph.xyz/deploy --ipfs https://api.0xgraph.xyz/ipfs --deploy-key $GRAPH_DEPLOY_KEY",
     "deploy:arbitrum-one": "source .env && graph deploy flow-splitter-arbitrum-one --node https://api.0xgraph.xyz/deploy --ipfs https://api.0xgraph.xyz/ipfs --deploy-key $GRAPH_DEPLOY_KEY",
     "deploy:optimism-sepolia": "source .env && graph deploy flow-splitter-optimism-sepolia --node https://api.0xgraph.xyz/deploy --ipfs https://api.0xgraph.xyz/ipfs --deploy-key $GRAPH_DEPLOY_KEY",
