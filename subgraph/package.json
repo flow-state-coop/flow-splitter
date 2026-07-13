@@ -14,7 +14,7 @@
     "build:arbitrum-one": "pnpm prepare:arbitrum-one && pnpm codegen && graph build",
     "build:optimism-sepolia": "pnpm prepare:optimism-sepolia && pnpm codegen && graph build",
     "deploy:base": "source .env && graph deploy flow-splitter-base --version-label v0.0.3 --node https://api.studio.thegraph.com/deploy/ --ipfs https://ipfs.network.thegraph.com --deploy-key $STUDIO_DEPLOY_KEY",
-    "deploy:celo": "source .env && graph deploy flow-splitter-celo --version-label v0.0.3 --node https://api.studio.thegraph.com/deploy/ --ipfs https://ipfs.network.thegraph.com --deploy-key $STUDIO_DEPLOY_KEY",
+    "deploy:celo": "source  .env && goldsky subgraph deploy flow-splitter-celo/v0.0.3 --path .",
     "deploy:optimism": "source .env && graph deploy flow-splitter-optimism --version-label v0.0.3 --node https://api.studio.thegraph.com/deploy/ --ipfs https://ipfs.network.thegraph.com --deploy-key $STUDIO_DEPLOY_KEY",
     "deploy:arbitrum-one": "source .env && graph deploy flow-splitter-arbitrum-one --version-label v0.0.3 --node https://api.studio.thegraph.com/deploy/ --ipfs https://ipfs.network.thegraph.com --deploy-key $STUDIO_DEPLOY_KEY",
     "deploy:optimism-sepolia": "source .env && goldsky subgraph deploy flow-splitter-optimism-sepolia/v0.0.3 --path .",
