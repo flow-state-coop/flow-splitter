@@ -1,6 +1,10 @@
-specVersion: 0.0.2
+specVersion: 1.0.0
 description: Flow Splitter Subgraph
 repository: https://github.com/Flow-State-Coop/flow-splitter/tree/main/subgraph
+
+indexerHints:
+  prune: auto
+
 schema:
   file: ./schema.graphql
 dataSources:
